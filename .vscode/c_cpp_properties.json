@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/include/c++/9/",
+                "/usr/lib/jvm/java-17-openjdk-amd64/include/",
+                "/usr/lib/jvm/java-17-openjdk-amd64/include/linux/",
+                "/lib/sqlite3/include"
+            ],
+            "defines": [],
+            "cStandard": "c17",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}

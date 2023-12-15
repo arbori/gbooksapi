@@ -15,6 +15,38 @@ extern "C" {
 JNIEXPORT jstring JNICALL Java_com_bookstore_service_BookStoreIntegration_search
   (JNIEnv *, jobject, jstring, jint, jint);
 
+/*
+ * Class:     com_bookstore_service_BookStoreIntegration
+ * Method:    startFavoriteRepository
+ * Signature: (Ljava/lang/String;)J
+ */
+JNIEXPORT jlong JNICALL Java_com_bookstore_service_BookStoreIntegration_startFavoriteRepository
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_bookstore_service_BookStoreIntegration
+ * Method:    closeFavoriteRepository
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_com_bookstore_service_BookStoreIntegration_closeFavoriteRepository
+  (JNIEnv *, jobject, jlong);
+
+/*
+ * Class:     com_bookstore_service_BookStoreIntegration
+ * Method:    updateFavorite
+ * Signature: (JLcom/bookstore/service/dto/VolumeItemDTO;)V
+ */
+JNIEXPORT void JNICALL Java_com_bookstore_service_BookStoreIntegration_updateFavorite
+  (JNIEnv *, jobject, jlong, jobject);
+
+/*
+ * Class:     com_bookstore_service_BookStoreIntegration
+ * Method:    isFavorite
+ * Signature: (JLjava/lang/String;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_bookstore_service_BookStoreIntegration_isFavorite
+  (JNIEnv *, jobject, jlong, jstring);
+
 #ifdef __cplusplus
 }
 #endif

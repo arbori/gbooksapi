@@ -1,3 +1,6 @@
+#include "gbooks.h"
+#include "volumeitem.h"
+
 #include <iostream>
 #include <string>
 #include <regex>
