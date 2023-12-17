@@ -17,7 +17,33 @@ std::string jstring2string(JNIEnv *env, jstring jstr) {
     return std::string(inCStr);
 }
 
+jstring get_string(JNIEnv *env, jclass clazz, jobject object, const std::string& method_name) {
+    const jmethodID get_attribute = env->GetMethodID(clazz, method_name.c_str(), "()Ljava/lang/String;");
+    if(get_attribute == nullptr) {
+        std::cout << "error - The get string attribute is null.\n";
+        return nullptr;
+    }
+    const jstring valueJString = (jstring) env->CallObjectMethod(object, get_attribute, env->NewStringUTF("UTF-8"));
+    if(valueJString == nullptr) {
+        std::cout << "error - The value jstring is null.\n";
+        return nullptr;
+    }
+
+    return valueJString;
+}
+
+jboolean get_boolean(JNIEnv *env, jclass clazz, jobject object, const std::string& method_name) {
+    const jmethodID get_attribute = env->GetMethodID(clazz, method_name.c_str(), "()Ljava/lang/Boolean;");
+    if(get_attribute == nullptr) {
+        std::cout << "error - The get boolean attribute is null.\n";
+        return false;
+    }
+    return (jboolean) env->CallBooleanMethod(object, get_attribute);
+}
+
 VolumeItem* jobject2volumeitem(JNIEnv *env, jobject volumeItemDTO) {
+    std::cout << "Calling jobject2volumeitem(JNIEnv *env, jobject volumeItemDTO)\n";
+
     if (!volumeItemDTO) {
         return nullptr;
     }
@@ -30,64 +56,22 @@ VolumeItem* jobject2volumeitem(JNIEnv *env, jobject volumeItemDTO) {
         std::cout << "jobject2volumeitem: The object volumeItemDTOClass is null.\n";
         return nullptr;
     }
-
-    std::cout << "jobject2volumeitem: Getting attribute object for FavoriteItemDTO.id...\n";
-    const jfieldID idField = env->GetFieldID(volumeItemDTOClass, "id", "()Ljava/lang/String;");
-    if(idField == nullptr) {
-        std::cout << "jobject2volumeitem: The field object FavoriteItemDTO.id is null.\n";
-        return nullptr;
-    }
-    std::cout << "jobject2volumeitem: Getting the value for FavoriteItemDTO.id...\n";
-    const jstring idJString = (jstring) env->GetObjectField(volumeItemDTO, idField);
+    
+    const jstring idJString = get_string(env, volumeItemDTOClass, volumeItemDTO, "getId");
     if(idJString == nullptr) {
         std::cout << "jobject2volumeitem: The idJString is null.\n";
         return nullptr;
     }
-    std::cout << "jobject2volumeitem: FavoriteItemDTO.id = " << jstring2string(env, idJString) << ".\n";
 
-    std::cout << "jobject2volumeitem: Getting attribute object for FavoriteItemDTO.title...\n";
-    const jfieldID titleField = env->GetFieldID(volumeItemDTOClass, "title", "()Ljava/lang/String;");
-    if(titleField == nullptr) {
-        std::cout << "jobject2volumeitem: The field object FavoriteItemDTO.title is null.\n";
-        return nullptr;
-    }
-    const jstring titleJString = (jstring) env->GetObjectField(volumeItemDTO, titleField);
-    if(titleJString == nullptr) {
+    const jstring titleJString = get_string(env, volumeItemDTOClass, volumeItemDTO, "getTitle");
+    if(idJString == nullptr) {
         std::cout << "jobject2volumeitem: The titleJString is null.\n";
         return nullptr;
     }
 
-    std::cout << "jobject2volumeitem: Getting attribute object for FavoriteItemDTO.smallThumbnail...\n";
-    const jfieldID smallThumbnailField = env->GetFieldID(volumeItemDTOClass, "smallThumbnail", "()Ljava/lang/String;");
-    if(smallThumbnailField == nullptr) {
-        std::cout << "jobject2volumeitem: The field object FavoriteItemDTO.smallThumbnail is null.\n";
-        return nullptr;
-    }
-    const jstring smallThumbnailJString = (jstring) env->GetObjectField(volumeItemDTO, smallThumbnailField);
-    if(smallThumbnailJString == nullptr) {
-        std::cout << "jobject2volumeitem: The smallThumbnailJString is null.\n";
-        return nullptr;
-    }
-
-    std::cout << "jobject2volumeitem: Getting attribute object for FavoriteItemDTO.thumbnail...\n";
-    const jfieldID thumbnailField = env->GetFieldID(volumeItemDTOClass, "thumbnail", "()Ljava/lang/String;");
-    if(thumbnailField == nullptr) {
-        std::cout << "jobject2volumeitem: The field object FavoriteItemDTO.thumbnail is null.\n";
-        return nullptr;
-    }
-    const jstring thumbnailJString = (jstring) env->GetObjectField(volumeItemDTO, thumbnailField);
-    if(thumbnailJString == nullptr) {
-        std::cout << "jobject2volumeitem: The thumbnailJString is null.\n";
-        return nullptr;
-    }
-
-    std::cout << "jobject2volumeitem: Getting attribute object for FavoriteItemDTO.favorite...\n";
-    const jfieldID favoriteField = env->GetFieldID(volumeItemDTOClass, "favorite", "()Ljava/lang/Boolean;");
-    if(favoriteField == nullptr) {
-        std::cout << "jobject2volumeitem: The field object FavoriteItemDTO.favorite is null.\n";
-        return nullptr;
-    }
-    const jboolean favoriteJBoolean = env->GetBooleanField(volumeItemDTO, favoriteField);
+    const jstring smallThumbnailJString = get_string(env, volumeItemDTOClass, volumeItemDTO, "getSmallThumbnail");
+    const jstring thumbnailJString = get_string(env, volumeItemDTOClass, volumeItemDTO, "getThumbnail");
+    const jboolean favoriteJBoolean = get_boolean(env, volumeItemDTOClass, volumeItemDTO, "getFavorite");
 
     vi->id = jstring2string(env, idJString);
     vi->title = jstring2string(env, titleJString);
